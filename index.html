@@ -241,6 +241,127 @@ document.getElementById("staffForm").addEventListener("submit", async function(e
 </html>
 
 
+	<!-- STAFF DASHBOARD -->
+<section id="staffDashboard" class="hidden py-16 bg-gray-50">
+  <div class="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+      Staff Dashboard - Pending Deliveries
+    </h3>
+
+    <p class="text-gray-600 mb-6 text-center">
+      Staff login only. Only orders assigned to you with "Pending Delivery" will appear.
+    </p>
+
+    <table id="ordersTable" class="w-full border-collapse border text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border px-3 py-2">Order No</th>
+          <th class="border px-3 py-2">Customer</th>
+          <th class="border px-3 py-2">Phone</th>
+          <th class="border px-3 py-2">Qty</th>
+          <th class="border px-3 py-2">Payment</th>
+          <th class="border px-3 py-2">Delivery Point</th>
+          <th class="border px-3 py-2">Invoice</th>
+          <th class="border px-3 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="text-center my-6">
+  <button id="staffLoginBtn" class="bg-gray-700 text-white px-6 py-3 rounded shadow hover:bg-gray-800">
+    Staff Login
+  </button>
+</div>
+
+<script>
+const staffPassword = "Staff123"; // Change this to your desired password
+const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+let refreshInterval;
+
+// ==== STAFF LOGIN ====
+document.getElementById("staffLoginBtn").addEventListener("click", () => {
+  const password = prompt("Enter staff password:");
+  if(password === staffPassword) {
+    document.getElementById("staffDashboard").classList.remove("hidden");
+    alert("Access granted. Welcome!");
+    loadOrders(); // Initial load
+    refreshInterval = setInterval(loadOrders, 60000); // Refresh every 60s
+  } else if(password) {
+    alert("Incorrect password. Access denied.");
+  }
+});
+
+// ==== LOAD PENDING ORDERS ====
+async function loadOrders() {
+  try {
+    const res = await fetch(`${SCRIPT_URL}?type=assignedPending`);
+    if(!res.ok) throw new Error("Network response was not ok");
+    const orders = await res.json();
+
+    const tbody = document.querySelector("#ordersTable tbody");
+    tbody.innerHTML = "";
+
+    if(orders.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">No pending deliveries.</td></tr>`;
+      return;
+    }
+
+    orders.forEach(o => {
+      const row = document.createElement("tr");
+      row.classList.add("hover:bg-gray-50");
+      row.innerHTML = `
+        <td class="border px-3 py-2">${o.OrderNumber || ""}</td>
+        <td class="border px-3 py-2">${o.FullName || ""}</td>
+        <td class="border px-3 py-2">${o.PhoneNumber || ""}</td>
+        <td class="border px-3 py-2">${o.Quantity || ""}</td>
+        <td class="border px-3 py-2">${o.PaymentMethod || ""}</td>
+        <td class="border px-3 py-2">${o.DeliveryPoint || ""}</td>
+        <td class="border px-3 py-2 text-center">
+          ${o.InvoiceUrl ? `<a href="${o.InvoiceUrl}" target="_blank" class="text-blue-600 underline">View</a>` : ""}
+        </td>
+        <td class="border px-3 py-2 text-center">
+          <button onclick="markDelivered(${o._rowNumber})" 
+            class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+            Delivered
+          </button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  } catch(err) {
+    console.error("Failed to load orders:", err);
+    alert("Failed to fetch orders. Please check your network or script URL.");
+  }
+}
+
+// ==== MARK ORDER AS DELIVERED ====
+async function markDelivered(row) {
+  if(!confirm("Mark this order as Delivered?")) return;
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `action=markDelivered&row=${row}`
+    });
+
+    const result = await res.text();
+    console.log(result);
+
+    alert("Order marked as delivered!");
+    loadOrders(); // Refresh table
+  } catch(err) {
+    console.error(err);
+    alert("Failed to update delivery status.");
+  }
+}
+</script>
+
+
 
   <!-- Contact Section -->
   <section id="contact" class="py-16 bg-gray-100">
@@ -294,6 +415,7 @@ document.getElementById("orderForm").addEventListener("submit", async function(e
   }
 });
 </script>
+
 
 
 
