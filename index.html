@@ -127,30 +127,38 @@
 </html>
 
 
-document.getElementById("orderForm").addEventListener("submit", function(e) {
-  e.preventDefault(); // stop normal form submission
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec"; // Paste your deployed Web App URL here
 
-  const data = {
-    fullName: document.getElementById("fullName").value,
-    phoneNumber: document.getElementById("phoneNumber").value,
-    deliveryLocation: document.getElementById("deliveryLocation").value,
-    quantity: document.getElementById("quantity").value,
-    preferredTime: document.getElementById("preferredTime").value,
-    paymentMethod: document.getElementById("paymentMethod").value,
-    additionalNotes: document.getElementById("additionalNotes").value
-  };
+document.getElementById("orderForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-  fetch("https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(response => response.text())
-  .then(res => {
-    console.log(res);
-    // Redirect after success
-    window.location.href = "https://sites.google.com/view/thesausagehaven/home";
-  })
-  .catch(err => console.error(err));
+  const formData = new FormData(this);
+  const data = new URLSearchParams(formData).toString();
+
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: data
+    });
+
+    const result = await response.text();
+    console.log("Order response:", result);
+
+    // Redirect based on payment method
+    const paymentMethod = formData.get("paymentMethod");
+    if (paymentMethod.toLowerCase() === "cash") {
+      // Redirect to thank-you page for cash
+      window.location.href = "https://sites.google.com/view/thesausagehaven/home?status=cash";
+    } else if (paymentMethod.toLowerCase() === "momo") {
+      // Redirect to thank-you page for MoMo (after payment, Apps Script sends SMS)
+      window.location.href = "https://sites.google.com/view/thesausagehaven/home?status=momo";
+    }
+  } catch (err) {
+    console.error("Error submitting order:", err);
+    alert("Something went wrong. Please try again.");
+  }
 });
+</script>
 
