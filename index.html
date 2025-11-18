@@ -146,46 +146,157 @@
   </div>
 
   <!-- WALK-IN STAFF FORM (hidden until login) -->
-  <section id="staffWalkIn" class="hidden fixed inset-0 z-30 overflow-auto p-6">
-    <div class="max-w-xl mx-auto bg-white p-6 rounded shadow-lg">
-      <h3 class="text-xl font-bold mb-4">Walk-in Order Entry</h3>
-      <form id="staffForm" class="space-y-3">
-        <input type="hidden" name="DeliveryLocation" value="Walk-In">
-        <input type="hidden" name="DeliveryTime" value="">
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Sausage Haven – Walk-In Order</title>
 
-        <div>
-          <label class="block text-gray-700 mb-1">Full Name</label>
-          <input name="FullName" required class="w-full border rounded px-3 py-2" placeholder="Customer Name">
-        </div>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+    padding: 20px;
+  }
+  .container {
+    max-width: 450px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  h2 { text-align: center; }
+  label { font-weight: bold; }
+  select, input, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #ff6600;
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #e65c00; }
+  #response {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+</style>
+</head>
 
-        <div>
-          <label class="block text-gray-700 mb-1">Phone Number</label>
-          <input name="PhoneNumber" required class="w-full border rounded px-3 py-2" placeholder="024...">
-        </div>
+<body>
+<div class="container">
+  <h2>Walk-In Order</h2>
 
-        <div>
-          <label class="block text-gray-700 mb-1">Quantity</label>
-          <input name="Quantity" type="number" min="1" required class="w-full border rounded px-3 py-2" placeholder="2">
-        </div>
+  <form id="walkInForm">
 
-        <div>
-          <label class="block text-gray-700 mb-1">Payment Method</label>
-          <select name="PaymentMethod" required class="w-full border rounded px-3 py-2">
-            <option value="">Choose</option>
-            <option value="Cash">Cash</option>
-            <option value="MoMo">MoMo</option>
-          </select>
-        </div>
+    <label>Full Name</label>
+    <input type="text" name="fullName" required />
 
-        <div class="flex justify-end gap-3 pt-2">
-          <button type="button" id="cancelWalkIn" class="px-4 py-2 rounded border">Cancel</button>
-          <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white">Submit Walk-in</button>
-        </div>
+    <label>Phone Number</label>
+    <input type="text" name="phone" required />
 
-        <p id="staffFormStatus" class="text-sm text-gray-600 mt-2 hidden"></p>
-      </form>
-    </div>
-  </section>
+    <label>Delivery Location</label>
+    <input type="text" name="location" required />
+
+    <label>Quantity</label>
+    <input type="number" name="quantity" required min="1" />
+
+    <label>Preferred Delivery Time</label>
+    <input type="text" name="preferredTime" placeholder="eg. 2:00 PM" />
+
+    <label>Payment Method</label>
+    <select name="paymentMethod">
+      <option value="cash">Cash</option>
+      <option value="momo">MoMo</option>
+    </select>
+
+    <label>Shop</label>
+    <select name="shop" required>
+      <option value="">Select Shop</option>
+      <option value="J's Royal">J's Royal</option>
+      <option value="Gusss Hostel">Gusss Hostel</option>
+    </select>
+
+    <label>Delivery Staff</label>
+    <select name="deliveryStaff" required>
+      <option value="">Select Staff</option>
+      <option value="DM001">DM001</option>
+      <option value="DM002">DM002</option>
+      <option value="DM003">DM003</option>
+      <option value="DM004">DM004</option>
+      <option value="DM005">DM005</option>
+      <option value="DM006">DM006</option>
+      <option value="DM007">DM007</option>
+      <option value="DM008">DM008</option>
+      <option value="DM009">DM009</option>
+      <option value="DM010">DM010</option>
+      <option value="DM011">DM011</option>
+      <option value="DM012">DM012</option>
+      <option value="DM013">DM013</option>
+    </select>
+
+    <label>Additional Notes</label>
+    <textarea name="notes" rows="3"></textarea>
+
+    <button type="submit">Submit Walk-In Order</button>
+  </form>
+
+  <div id="response"></div>
+</div>
+
+<script>
+document.getElementById("walkInForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = {
+        fullName: form.fullName.value,
+        phone: form.phone.value,
+        location: form.location.value,
+        quantity: form.quantity.value,
+        preferredTime: form.preferredTime.value,
+        paymentMethod: form.paymentMethod.value,
+        notes: form.notes.value,
+        shop: form.shop.value,
+        deliveryStaff: form.deliveryStaff.value
+    };
+
+    document.getElementById("response").innerText = "Submitting...";
+
+    try {
+        const res = await fetch(
+          "https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec?action=walkin",
+          {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+          }
+        );
+
+        document.getElementById("response").innerText =
+            "Walk-in order submitted successfully!";
+        form.reset();
+    } catch (err) {
+        document.getElementById("response").innerText =
+            "Error submitting walk-in order.";
+    }
+});
+</script>
+
+</body>
+</html>
+
 
   <!-- STAFF DASHBOARD (hidden until login) -->
   <section id="staffDashboard" class="hidden py-10 bg-gray-50">
@@ -497,4 +608,5 @@
   </script>
 </body>
 </html>
+
 
