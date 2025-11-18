@@ -206,6 +206,40 @@
       <button type="submit">Submit Walk-In Order</button>
     </form>
 
+    <script>
+      // Form submit handler (works for walk-in and online)
+async function handleOrderSubmission(formData) {
+  try {
+    const response = await fetch("YOUR_APPS_SCRIPT_WEB_APP_URL", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      // 1️⃣ Cash payments or Walk-ins marked PAID immediately
+      if (!result.paystackUrl) {
+        alert("Order successful!\nInvoice: " + result.invoiceLink);
+        // Optionally, you could open invoice in new tab
+        window.open(result.invoiceLink, "_blank");
+      } 
+      // 2️⃣ MoMo payments - redirect to Paystack
+      else if (result.paystackUrl) {
+        // Redirect customer to Paystack payment page
+        window.location.href = result.paystackUrl;
+      }
+    } else {
+      alert("Error submitting order: " + result.message);
+    }
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("Failed to submit order. Please try again.");
+  }
+}
+    </script>
+
     <div id="response"></div>
   </div>
 </section>
@@ -356,6 +390,7 @@ await fetch(SCRIPT_URL, {
 
 </body>
 </html>
+
 
 
 
