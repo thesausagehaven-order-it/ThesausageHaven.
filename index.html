@@ -278,14 +278,16 @@
   document.getElementById("orderForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const form = new FormData(orderForm);
-    const payload = new URLSearchParams(form).toString();
+   const form = new FormData(orderForm);
+form.append("action", "onlineOrder"); // tell Apps Script it's a new order
+const payload = new URLSearchParams(form).toString();
 
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: payload
-    });
+await fetch(SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: payload
+});
+
 
     document.getElementById("orderStatus").textContent = "Order submitted!";
     document.getElementById("orderStatus").classList.remove("hidden");
@@ -296,13 +298,16 @@
   document.getElementById("walkInForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const data = new FormData(e.target);
-    const json = JSON.stringify(Object.fromEntries(data));
+    const form = new FormData(e.target);
+form.append("action", "walkin"); // crucial
+const payload = new URLSearchParams(form).toString();
 
-    await fetch(SCRIPT_URL + "?action=walkin", {
-      method: "POST",
-      body: json
-    });
+await fetch(SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: payload
+});
+
 
     document.getElementById("response").textContent = "Walk-In Order Saved!";
     e.target.reset();
@@ -351,4 +356,5 @@
 
 </body>
 </html>
+
 
