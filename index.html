@@ -133,7 +133,10 @@
   <section id="staffFormSection" class="hidden py-16">
     <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
       <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Walk-in Order Entry</h3>
-      <form id="staffForm" class="space-y-6">
+    <form id="staffForm" action="https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec" method="POST" class="space-y-6">
+  <!-- Hidden fields so Apps Script gets valid input -->
+
+ 
 
         <!-- Full Name -->
         <div>
@@ -148,13 +151,19 @@
           <input type="tel" name="PhoneNumber" placeholder="e.g., 0241234567" required
             class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
         </div>
-
+		
+		<div> <input type="hidden" name="DeliveryLocation" value="Walk-In">
+			</div>
+		  
         <!-- Quantity -->
         <div>
           <label class="block text-gray-700 font-medium mb-2">Quantity</label>
           <input type="number" name="Quantity" min="1" placeholder="e.g., 2" required
             class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
         </div>
+		<div>
+			 <input type="hidden" name="PreferredDeliveryTime" value="">
+		</div>
 
         <!-- Payment Method -->
         <div>
@@ -284,6 +293,7 @@ document.getElementById("orderForm").addEventListener("submit", async function(e
   }
 });
 </script>
+
 
 
 
