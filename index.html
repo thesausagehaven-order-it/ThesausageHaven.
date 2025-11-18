@@ -1,426 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Sausage Haven - Order Now</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Sausage Haven</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans text-gray-800">
+
+  <!-- Replace with your published Apps Script Web App URL -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+    // SECURITY NOTE: client-side password is only for convenience. It's visible to anyone who views source.
+    // For production use server-side auth or a proper backend.
+  </script>
 
   <!-- Header -->
   <header class="bg-red-600 text-white p-6 shadow-md">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-bold">The Sausage Haven</h1>
+      <h1 class="text-2xl md:text-3xl font-bold">The Sausage Haven</h1>
       <nav class="space-x-4">
         <a href="#order" class="hover:underline">Order Now</a>
         <a href="#contact" class="hover:underline">Contact</a>
+        <button id="openStaffLogin" class="ml-4 bg-white text-red-600 px-3 py-1 rounded hover:bg-gray-100">Staff</button>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-red-400 to-red-600 text-white py-20 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-4xl font-bold mb-4">Fresh & Delicious Sausages Delivered!</h2>
-      <p class="text-lg mb-6">Order online and get your favorite sausages straight to your hostel or home.</p>
-      <a href="#order" class="bg-white text-red-600 font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Place Your Order</a>
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-red-400 to-red-600 text-white py-16 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">Fresh & Delicious Sausages Delivered!</h2>
+      <p class="mb-6">Order online and get your favorite sausages straight to your hostel or home.</p>
+      <a href="#order" class="bg-white text-red-600 font-bold px-6 py-2 rounded shadow hover:bg-gray-100 transition">Place Your Order</a>
     </div>
   </section>
 
-  <!-- Order Form Section -->
-  <section id="order" class="py-16">
-    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
-      <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Place Your Order</h3>
-      <form action="https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec" method="POST" class="space-y-6">
-        
-        <!-- Full Name -->
+  <!-- Main content wrapper -->
+  <main class="max-w-6xl mx-auto p-6 space-y-10">
+
+    <!-- CUSTOMER ORDER FORM (JavaScript submission - id="orderForm") -->
+    <section id="order" class="bg-white p-8 rounded-lg shadow-md">
+      <h3 class="text-2xl font-bold mb-4 text-center">Place Your Order</h3>
+
+      <form id="orderForm" class="space-y-4">
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Full Name</label>
-          <input type="text" name="FullName" placeholder="e.g., John Doe" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <label class="block text-gray-700 mb-1">Full Name</label>
+          <input name="FullName" type="text" required placeholder="John Doe"
+                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
         </div>
-		  
-		  <br>
 
-        <!-- Phone Number -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
-          <input type="tel" name="PhoneNumber" placeholder="e.g., 0241234567" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
-        </div><br>
+          <label class="block text-gray-700 mb-1">Phone Number</label>
+          <input name="PhoneNumber" type="tel" required placeholder="0241234567"
+                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
 
-
-        <!-- Delivery Location -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Delivery Location</label>
-          <input type="text" name="DeliveryLocation" placeholder="e.g., Hostel A, Room 12" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
-        </div><br>
+          <label class="block text-gray-700 mb-1">Delivery Location</label>
+          <input name="DeliveryLocation" type="text" required placeholder="Hostel A, Room 12"
+                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
 
-
-        <!-- Quantity -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Quantity</label>
-          <input type="number" name="Quantity" min="1" max="50" step="1" required
-  class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <label class="block text-gray-700 mb-1">Quantity</label>
+          <input name="Quantity" type="number" min="1" max="50" step="1" required
+                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
 
-        </div><br>
-
-
-        <!-- Preferred Delivery Time -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Preferred Delivery Time</label>
-          <input type="time" name="DeliveryTime" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
-          <p class="text-gray-500 text-sm mt-1">Orders are prepared fresh and delivered as soon as possible.</p>
-        </div><br>
+          <label class="block text-gray-700 mb-1">Preferred Delivery Time</label>
+          <input name="DeliveryTime" type="time" required
+                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <p class="text-sm text-gray-500 mt-1">Orders are prepared fresh and delivered as soon as possible.</p>
+        </div>
 
-
-        <!-- Payment Method -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Payment Method</label>
+          <label class="block text-gray-700 mb-1">Payment Method</label>
           <select name="PaymentMethod" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+                  class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
             <option value="">Select a method</option>
             <option value="Cash">Cash on Delivery</option>
-            <option value="MoMo">Mobile Money (small processing fee applies)</option>
+            <option value="MoMo">Mobile Money (MoMo)</option>
           </select>
-        </div><br>
+        </div>
 
-
-        <!-- Additional Notes -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Additional Notes</label>
-          <textarea name="AdditionalNotes" placeholder="Special requests..." rows="3"
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
-        </div><br>
-<br>
+          <label class="block text-gray-700 mb-1">Additional Notes</label>
+          <textarea name="AdditionalNotes" rows="3"
+                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    placeholder="E.g., leave at the gate..."></textarea>
+        </div>
 
-        <!-- Submit Button -->
         <div class="text-center">
-          <button type="submit"
-            class="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow hover:bg-red-700 transform hover:scale-105 transition duration-300">
+          <button id="submitOrderBtn" type="submit"
+                  class="bg-red-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-red-700 transform hover:scale-105 transition">
             Submit Order
           </button>
         </div>
+
+        <p id="orderStatus" class="text-center text-sm text-gray-600 mt-2 hidden"></p>
       </form>
-    </div>
-  </section><br>
-<br>
+    </section>
 
+    <!-- CONTACT -->
+    <section id="contact" class="bg-gray-100 p-6 rounded-md text-center">
+      <h4 class="text-lg font-bold mb-2">Contact Us</h4>
+      <p>Phone: 0256507851</p>
+      <p>Email: thesausagehaven@gmail.com</p>
+    </section>
+  </main>
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Staff - The Sausage Haven Orders</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 font-sans">
+  <!-- STAFF LOGIN MODAL (simple) -->
+  <div id="staffModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-40">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl mx-4 md:mx-0">
+      <div class="p-6 md:flex md:gap-6">
+        <!-- Password & options -->
+        <div class="md:w-1/2">
+          <h3 class="text-xl font-bold mb-3">Staff Access</h3>
+          <p class="text-sm text-gray-600 mb-4">Enter staff password to access walk-in form or dashboard.</p>
+          <input id="modalPassword" type="password" placeholder="Staff password"
+                 class="w-full border rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <div class="flex gap-3">
+            <button id="openWalkInBtn" class="flex-1 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Walk-in Entry</button>
+            <button id="openDashboardBtn" class="flex-1 bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">Open Dashboard</button>
+          </div>
+          <p class="text-xs text-gray-500 mt-3">Password is stored client-side (visible in source). Use server auth for production.</p>
+        </div>
 
-  <!-- Password Entry (Simple Protection) -->
-  <div id="passwordDiv" class="flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96 text-center">
-      <h2 class="text-2xl font-bold mb-4">Staff Login</h2>
-      <input type="password" id="staffPassword" placeholder="Enter staff password"
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400 mb-4">
-      <button onclick="checkPassword()"
-        class="bg-red-600 text-white font-bold px-6 py-2 rounded hover:bg-red-700">Login</button>
+        <!-- Quick instructions -->
+        <div class="md:w-1/2 border-l md:pl-6 mt-4 md:mt-0">
+          <h4 class="font-semibold mb-2">Staff actions</h4>
+          <ul class="text-sm list-disc list-inside text-gray-600">
+            <li>Walk-in: quickly add orders made in-person.</li>
+            <li>Dashboard: view assigned pending deliveries and mark as Delivered.</li>
+            <li>Delivered action updates your Google Sheet via Apps Script.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="px-6 py-3 text-right border-t">
+        <button id="closeStaffModal" class="px-4 py-2 rounded hover:bg-gray-100">Close</button>
+      </div>
     </div>
   </div>
 
-  <!-- Staff Form -->
-  <section id="staffFormSection" class="hidden py-16">
-    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
-      <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Walk-in Order Entry</h3>
-    <form id="staffForm" action="https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec" method="POST" class="space-y-6">
-  <!-- Hidden fields so Apps Script gets valid input -->
+  <!-- WALK-IN STAFF FORM (hidden until login) -->
+  <section id="staffWalkIn" class="hidden fixed inset-0 z-30 overflow-auto p-6">
+    <div class="max-w-xl mx-auto bg-white p-6 rounded shadow-lg">
+      <h3 class="text-xl font-bold mb-4">Walk-in Order Entry</h3>
+      <form id="staffForm" class="space-y-3">
+        <input type="hidden" name="DeliveryLocation" value="Walk-In">
+        <input type="hidden" name="DeliveryTime" value="">
 
- 
-
-        <!-- Full Name -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Full Name</label>
-          <input type="text" name="FullName" placeholder="e.g., John Doe" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <label class="block text-gray-700 mb-1">Full Name</label>
+          <input name="FullName" required class="w-full border rounded px-3 py-2" placeholder="Customer Name">
         </div>
 
-        <!-- Phone Number -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
-          <input type="tel" name="PhoneNumber" placeholder="e.g., 0241234567" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <label class="block text-gray-700 mb-1">Phone Number</label>
+          <input name="PhoneNumber" required class="w-full border rounded px-3 py-2" placeholder="024...">
         </div>
-		
-		<div> <input type="hidden" name="DeliveryLocation" value="Walk-In">
-			</div>
-		  
-        <!-- Quantity -->
-        <div>
-          <label class="block text-gray-700 font-medium mb-2">Quantity</label>
-          <input type="number" name="Quantity" min="1" placeholder="e.g., 2" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
-        </div>
-		<div>
-			 <input type="hidden" name="PreferredDeliveryTime" value="">
-		</div>
 
-        <!-- Payment Method -->
         <div>
-          <label class="block text-gray-700 font-medium mb-2">Payment Method</label>
-          <select name="PaymentMethod" required
-            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
-            <option value="">Select a method</option>
+          <label class="block text-gray-700 mb-1">Quantity</label>
+          <input name="Quantity" type="number" min="1" required class="w-full border rounded px-3 py-2" placeholder="2">
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Payment Method</label>
+          <select name="PaymentMethod" required class="w-full border rounded px-3 py-2">
+            <option value="">Choose</option>
             <option value="Cash">Cash</option>
             <option value="MoMo">MoMo</option>
           </select>
         </div>
 
-        <!-- Submit Button -->
-        <div class="text-center">
-          <button type="submit"
-            class="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow hover:bg-red-700 transform hover:scale-105 transition duration-300">
-            Submit Order
-          </button>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" id="cancelWalkIn" class="px-4 py-2 rounded border">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white">Submit Walk-in</button>
         </div>
+
+        <p id="staffFormStatus" class="text-sm text-gray-600 mt-2 hidden"></p>
       </form>
     </div>
   </section>
 
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec";
+  <!-- STAFF DASHBOARD (hidden until login) -->
+  <section id="staffDashboard" class="hidden py-10 bg-gray-50">
+    <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">Staff Dashboard — Pending Deliveries</h3>
+        <button id="closeDashboard" class="px-3 py-1 rounded bg-gray-200">Close</button>
+      </div>
 
-// Simple password protection
-function checkPassword() {
-  const pass = document.getElementById("staffPassword").value;
-  const correctPassword = "Staff123"; // <-- change this to your secure password
-  if(pass === correctPassword){
-    document.getElementById("passwordDiv").style.display = "none";
-    document.getElementById("staffFormSection").classList.remove("hidden");
-  } else {
-    alert("Incorrect password");
-  }
-}
+      <p class="text-sm text-gray-600 mb-4">Shows orders with status "Pending Delivery". Click <strong>Delivered</strong> to update.</p>
 
-// Submit staff form
-document.getElementById("staffForm").addEventListener("submit", async function(e){
-  e.preventDefault();
+      <div class="overflow-x-auto">
+        <table id="ordersTable" class="w-full border-collapse text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border px-3 py-2 text-left">Order No</th>
+              <th class="border px-3 py-2 text-left">Customer</th>
+              <th class="border px-3 py-2 text-left">Phone</th>
+              <th class="border px-3 py-2 text-left">Qty</th>
+              <th class="border px-3 py-2 text-left">Payment</th>
+              <th class="border px-3 py-2 text-left">Delivery Point</th>
+              <th class="border px-3 py-2 text-left">Invoice</th>
+              <th class="border px-3 py-2 text-left">Action</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white"></tbody>
+        </table>
+      </div>
 
-  const formData = new FormData(this);
-  const data = new URLSearchParams(formData).toString();
-
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: {"Content-Type": "application/x-www-form-urlencoded"},
-      body: data
-    });
-
-    const result = await response.text();
-    console.log("Staff order response:", result);
-
-    // Redirect based on payment method
-    const paymentMethod = formData.get("PaymentMethod");
-    if(paymentMethod.toLowerCase() === "cash"){
-      alert("Cash order submitted successfully!");
-      this.reset();
-    } else if(paymentMethod.toLowerCase() === "momo"){
-      alert("MoMo order submitted! Proceed to payment.");
-      // Here you could redirect to Paystack link if you want
-    }
-
-  } catch(err){
-    console.error("Error submitting order:", err);
-    alert("Something went wrong. Please try again.");
-  }
-});
-</script>
-
-</body>
-</html>
-
-
-	<!-- STAFF DASHBOARD -->
-<section id="staffDashboard" class="hidden py-16 bg-gray-50">
-  <div class="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-      Staff Dashboard - Pending Deliveries
-    </h3>
-
-    <p class="text-gray-600 mb-6 text-center">
-      Staff login only. Only orders assigned to you with "Pending Delivery" will appear.
-    </p>
-
-    <table id="ordersTable" class="w-full border-collapse border text-sm">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="border px-3 py-2">Order No</th>
-          <th class="border px-3 py-2">Customer</th>
-          <th class="border px-3 py-2">Phone</th>
-          <th class="border px-3 py-2">Qty</th>
-          <th class="border px-3 py-2">Payment</th>
-          <th class="border px-3 py-2">Delivery Point</th>
-          <th class="border px-3 py-2">Invoice</th>
-          <th class="border px-3 py-2">Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</section>
-
-<div class="text-center my-6">
-  <button id="staffLoginBtn" class="bg-gray-700 text-white px-6 py-3 rounded shadow hover:bg-gray-800">
-    Staff Login
-  </button>
-</div>
-
-<script>
-const staffPassword = "Staff123"; // Change this to your desired password
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-
-let refreshInterval;
-
-// ==== STAFF LOGIN ====
-document.getElementById("staffLoginBtn").addEventListener("click", () => {
-  const password = prompt("Enter staff password:");
-  if(password === staffPassword) {
-    document.getElementById("staffDashboard").classList.remove("hidden");
-    alert("Access granted. Welcome!");
-    loadOrders(); // Initial load
-    refreshInterval = setInterval(loadOrders, 60000); // Refresh every 60s
-  } else if(password) {
-    alert("Incorrect password. Access denied.");
-  }
-});
-
-// ==== LOAD PENDING ORDERS ====
-async function loadOrders() {
-  try {
-    const res = await fetch(`${SCRIPT_URL}?type=assignedPending`);
-    if(!res.ok) throw new Error("Network response was not ok");
-    const orders = await res.json();
-
-    const tbody = document.querySelector("#ordersTable tbody");
-    tbody.innerHTML = "";
-
-    if(orders.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">No pending deliveries.</td></tr>`;
-      return;
-    }
-
-    orders.forEach(o => {
-      const row = document.createElement("tr");
-      row.classList.add("hover:bg-gray-50");
-      row.innerHTML = `
-        <td class="border px-3 py-2">${o.OrderNumber || ""}</td>
-        <td class="border px-3 py-2">${o.FullName || ""}</td>
-        <td class="border px-3 py-2">${o.PhoneNumber || ""}</td>
-        <td class="border px-3 py-2">${o.Quantity || ""}</td>
-        <td class="border px-3 py-2">${o.PaymentMethod || ""}</td>
-        <td class="border px-3 py-2">${o.DeliveryPoint || ""}</td>
-        <td class="border px-3 py-2 text-center">
-          ${o.InvoiceUrl ? `<a href="${o.InvoiceUrl}" target="_blank" class="text-blue-600 underline">View</a>` : ""}
-        </td>
-        <td class="border px-3 py-2 text-center">
-          <button onclick="markDelivered(${o._rowNumber})" 
-            class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
-            Delivered
-          </button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    });
-  } catch(err) {
-    console.error("Failed to load orders:", err);
-    alert("Failed to fetch orders. Please check your network or script URL.");
-  }
-}
-
-// ==== MARK ORDER AS DELIVERED ====
-async function markDelivered(row) {
-  if(!confirm("Mark this order as Delivered?")) return;
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `action=markDelivered&row=${row}`
-    });
-
-    const result = await res.text();
-    console.log(result);
-
-    alert("Order marked as delivered!");
-    loadOrders(); // Refresh table
-  } catch(err) {
-    console.error(err);
-    alert("Failed to update delivery status.");
-  }
-}
-</script>
-
-
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-16 bg-gray-100">
-    <div class="max-w-4xl mx-auto text-center">
-      <h3 class="text-3xl font-bold text-gray-800 mb-4">Contact Us</h3>
-      <p class="text-gray-600 mb-2">Phone: 0256507851</p>
-      <p class="text-gray-600">Email: thesausagehaven@gmail.com</p>
+      <p id="dashboardStatus" class="text-sm text-gray-600 mt-3 hidden"></p>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-red-600 text-white p-6 mt-8 text-center">
-    © 2025 The Sausage Haven. All rights reserved.
+  <footer class="bg-red-600 text-white p-6 mt-10 text-center">
+    © 2025 The Sausage Haven
   </footer>
 
+  <!-- Scripts -->
+  <script>
+  /* -------------------------
+     Helper utilities
+     ------------------------- */
+  function show(el) { el.classList.remove('hidden'); el.style.display = ''; }
+  function hide(el) { el.classList.add('hidden'); el.style.display = 'none'; }
+
+  /* -------------------------
+     Staff modal & navigation
+     ------------------------- */
+  const staffModal = document.getElementById('staffModal');
+  const openStaff = document.getElementById('openStaffLogin');
+  const closeStaffModalBtn = document.getElementById('closeStaffModal');
+  const openWalkInBtn = document.getElementById('openWalkInBtn');
+  const openDashboardBtn = document.getElementById('openDashboardBtn');
+  const modalPassword = document.getElementById('modalPassword');
+
+  const STAFF_PASSWORD = "Staff123"; // change as needed (client-side only)
+
+  openStaff.addEventListener('click', () => {
+    show(staffModal);
+  });
+  closeStaffModalBtn.addEventListener('click', () => {
+    hide(staffModal);
+    modalPassword.value = '';
+  });
+
+  // Walk-in
+  openWalkInBtn.addEventListener('click', () => {
+    const pass = modalPassword.value;
+    if (pass !== STAFF_PASSWORD) return alert('Incorrect password');
+    hide(staffModal);
+    show(document.getElementById('staffWalkIn'));
+    modalPassword.value = '';
+  });
+
+  // Dashboard
+  openDashboardBtn.addEventListener('click', () => {
+    const pass = modalPassword.value;
+    if (pass !== STAFF_PASSWORD) return alert('Incorrect password');
+    hide(staffModal);
+    show(document.getElementById('staffDashboard'));
+    modalPassword.value = '';
+    loadOrders(); // initial load
+    startAutoRefresh();
+  });
+
+  // Close Dashboard button
+  document.getElementById('closeDashboard').addEventListener('click', () => {
+    hide(document.getElementById('staffDashboard'));
+    stopAutoRefresh();
+  });
+
+  // Cancel walk-in
+  document.getElementById('cancelWalkIn').addEventListener('click', () => {
+    hide(document.getElementById('staffWalkIn'));
+    document.getElementById('staffForm').reset();
+  });
+
+  /* -------------------------
+     Customer form (JS submission)
+     ------------------------- */
+  const orderForm = document.getElementById('orderForm');
+  const orderStatus = document.getElementById('orderStatus');
+  const submitOrderBtn = document.getElementById('submitOrderBtn');
+
+  orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    orderStatus.classList.add('hidden');
+    submitOrderBtn.disabled = true;
+    submitOrderBtn.textContent = 'Submitting...';
+
+    const formData = new FormData(orderForm);
+    const payload = new URLSearchParams(formData).toString();
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload
+      });
+
+      if (!res.ok) throw new Error('Network response was not ok');
+
+      const text = await res.text();
+      console.log('Order response:', text);
+
+      // show friendly message
+      orderStatus.textContent = 'Order submitted successfully! Redirecting...';
+      orderStatus.classList.remove('hidden');
+
+      // redirect or show different messaging based on PaymentMethod
+      const paymentMethod = formData.get('PaymentMethod') || '';
+      const pm = paymentMethod.trim().toLowerCase();
+
+      // Small delay for UX
+      setTimeout(() => {
+        if (pm === 'cash') {
+          window.location.href = "/?status=cash"; // update to your thank-you page if applicable
+        } else if (pm === 'momo') {
+          window.location.href = "/?status=momo"; // update to redirect after momo/payment flow
+        } else {
+          // fallback
+          window.location.href = "/";
+        }
+      }, 700);
+
+      orderForm.reset();
+    } catch (err) {
+      console.error('Error submitting order:', err);
+      orderStatus.textContent = 'Failed to submit order. Please try again.';
+      orderStatus.classList.remove('hidden');
+    } finally {
+      submitOrderBtn.disabled = false;
+      submitOrderBtn.textContent = 'Submit Order';
+    }
+  });
+
+  /* -------------------------
+     Staff Walk-in form
+     ------------------------- */
+  const staffForm = document.getElementById('staffForm');
+  const staffFormStatus = document.getElementById('staffFormStatus');
+
+  staffForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    staffFormStatus.classList.add('hidden');
+
+    const formData = new FormData(staffForm);
+    const payload = new URLSearchParams(formData).toString();
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload
+      });
+
+      if (!res.ok) throw new Error('Network response was not ok');
+
+      const text = await res.text();
+      console.log('Walk-in response:', text);
+
+      staffFormStatus.textContent = 'Walk-in order submitted!';
+      staffFormStatus.classList.remove('hidden');
+      staffForm.reset();
+
+      // keep modal open? we'll close after a short delay
+      setTimeout(() => {
+        hide(document.getElementById('staffWalkIn'));
+        staffFormStatus.classList.add('hidden');
+      }, 900);
+    } catch (err) {
+      console.error('Error submitting walk-in:', err);
+      staffFormStatus.textContent = 'Failed to submit. Try again.';
+      staffFormStatus.classList.remove('hidden');
+    }
+  });
+
+  /* -------------------------
+     Staff Dashboard - load orders & mark delivered
+     ------------------------- */
+  const ordersTableBody = document.querySelector('#ordersTable tbody');
+  const dashboardStatus = document.getElementById('dashboardStatus');
+  let refreshHandle = null;
+
+  async function loadOrders() {
+    dashboardStatus.classList.add('hidden');
+    try {
+      const res = await fetch(`${SCRIPT_URL}?type=assignedPending`);
+      if (!res.ok) throw new Error('Failed to fetch orders');
+      const orders = await res.json();
+
+      ordersTableBody.innerHTML = '';
+      if (!orders || orders.length === 0) {
+        ordersTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">No pending deliveries.</td></tr>`;
+        return;
+      }
+
+      orders.forEach(o => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+
+        // Use template with Invoice link correctly as string
+        const invoiceCell = o.InvoiceUrl ? `<a href="${o.InvoiceUrl}" target="_blank" class="text-blue-600 underline">View</a>` : '';
+
+        tr.innerHTML = `
+          <td class="border px-3 py-2">${o.OrderNumber || ''}</td>
+          <td class="border px-3 py-2">${o.FullName || ''}</td>
+          <td class="border px-3 py-2">${o.PhoneNumber || ''}</td>
+          <td class="border px-3 py-2">${o.Quantity || ''}</td>
+          <td class="border px-3 py-2">${o.PaymentMethod || ''}</td>
+          <td class="border px-3 py-2">${o.DeliveryPoint || ''}</td>
+          <td class="border px-3 py-2 text-center">${invoiceCell}</td>
+          <td class="border px-3 py-2 text-center">
+            <button class="deliveredBtn bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" data-row="${o._rowNumber}">Delivered</button>
+          </td>
+        `;
+        ordersTableBody.appendChild(tr);
+      });
+
+      // attach listeners to delivered buttons
+      document.querySelectorAll('.deliveredBtn').forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+          const row = ev.currentTarget.getAttribute('data-row');
+          await markDelivered(row);
+        });
+      });
+    } catch (err) {
+      console.error('Failed to load orders:', err);
+      dashboardStatus.textContent = 'Failed to load orders. Check network or script URL.';
+      dashboardStatus.classList.remove('hidden');
+    }
+  }
+
+  async function markDelivered(row) {
+    if (!confirm('Mark this order as Delivered?')) return;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'markDelivered', row: row }).toString()
+      });
+
+      if (!res.ok) throw new Error('Network response not ok');
+      const text = await res.text();
+      console.log('markDelivered response:', text);
+      alert('Order marked as delivered.');
+      await loadOrders();
+    } catch (err) {
+      console.error('Failed to mark delivered:', err);
+      alert('Failed to update delivery status.');
+    }
+  }
+
+  function startAutoRefresh() {
+    if (refreshHandle) return;
+    refreshHandle = setInterval(loadOrders, 60000); // 60s
+  }
+  function stopAutoRefresh() {
+    if (!refreshHandle) return;
+    clearInterval(refreshHandle);
+    refreshHandle = null;
+  }
+
+  /* -------------------------
+     Ensure modal opened from header also works
+     ------------------------- */
+  document.getElementById('openStaffLogin').addEventListener('click', () => {
+    show(staffModal);
+  });
+
+  // click outside to close modal (optional)
+  staffModal.addEventListener('click', (e) => {
+    if (e.target === staffModal) {
+      hide(staffModal);
+      modalPassword.value = '';
+    }
+  });
+
+  /* -------------------------
+     On page load cleanup (hide elements)
+     ------------------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    hide(document.getElementById('staffWalkIn'));
+    hide(document.getElementById('staffDashboard'));
+    hide(staffModal); // start hidden
+  });
+
+  </script>
 </body>
 </html>
-
-
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec"; // Paste your deployed Web App URL here
-
-document.getElementById("orderForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const formData = new FormData(this);
-  const data = new URLSearchParams(formData).toString();
-
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: data
-    });
-
-    const result = await response.text();
-    console.log("Order response:", result);
-
-    // Redirect based on payment method
-    const paymentMethod = formData.get("paymentMethod");
-    if (paymentMethod.toLowerCase() === "cash") {
-      // Redirect to thank-you page for cash
-      window.location.href = "https://sites.google.com/view/thesausagehaven/home?status=cash";
-    } else if (paymentMethod.toLowerCase() === "momo") {
-      // Redirect to thank-you page for MoMo (after payment, Apps Script sends SMS)
-      window.location.href = "https://sites.google.com/view/thesausagehaven/home?status=momo";
-    }
-  } catch (err) {
-    console.error("Error submitting order:", err);
-    alert("Something went wrong. Please try again.");
-  }
-});
-</script>
-
-
-
-
-
-
-
-
-
