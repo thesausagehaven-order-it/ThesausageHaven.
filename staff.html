@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard - The Sausage Haven</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-bold mb-4 text-center">Staff Login</h2>
+      <input type="password" id="staffPassword" placeholder="Enter password"
+        class="w-full border border-gray-300 rounded px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-red-400">
+      <button id="loginBtn"
+        class="w-full bg-red-600 text-white font-bold py-2 rounded hover:bg-red-700 transition">Login</button>
+      <p id="loginError" class="text-red-500 mt-2 text-center hidden">Incorrect password</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden p-8">
+    <h1 class="text-3xl font-bold mb-6">Staff Dashboard</h1>
+    <div id="ordersList"></div>
+  </div>
+
+  <script>
+    const PASSWORD = "Sausage123"; // change to a secure password
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const entered = document.getElementById("staffPassword").value;
+      if(entered === PASSWORD){
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        loadOrders();
+      } else {
+        document.getElementById("loginError").classList.remove("hidden");
+      }
+    });
+
+    // ---------- Connect to Apps Script JSON ----------
+    function loadOrders(){
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?staff=true")
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("ordersList");
+          container.innerHTML = "";
+          data.forEach(order => {
+            const div = document.createElement("div");
+            div.className = "bg-white p-4 mb-3 rounded shadow flex justify-between items-center";
+            div.innerHTML = `
+              <div>
+                <p><strong>${order.orderNumber}</strong> - ${order.customer}</p>
+                <p>${order.deliveryLocation} | Qty: ${order.quantity}</p>
+              </div>
+              <button onclick="markDelivered('${order.orderNumber}')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Delivered</button>
+            `;
+            container.appendChild(div);
+          });
+        });
+    }
+
+    function markDelivered(orderNumber){
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ action:"markDelivered", orderNumber })
+      }).then(res => res.text()).then(r => loadOrders());
+    }
+  </script>
+</body>
+</html>
