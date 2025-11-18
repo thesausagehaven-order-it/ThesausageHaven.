@@ -127,53 +127,30 @@
 </html>
 
 
-<script>
-async function submitOrder(e) {
-  e.preventDefault();
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // stop normal form submission
 
-  // Get form values
-  const customer = document.querySelector("#fullName").value;
-  const phone = document.querySelector("#phoneNumber").value;
-  const deliveryLocation = document.querySelector("#deliveryLocation").value;
-  const quantity = Number(document.querySelector("#quantity").value);
-  const paymentMethod = document.querySelector("#paymentMethod").value;
-
-  // Prepare payload for Apps Script
-  const payload = {
-    sourceSheet: "Orders",        // tells Apps Script which sheet
-    customer: customer,
-    phone: phone,
-    quantity: quantity,
-    paymentMethod: paymentMethod,
-    deliveryLocation: deliveryLocation
+  const data = {
+    fullName: document.getElementById("fullName").value,
+    phoneNumber: document.getElementById("phoneNumber").value,
+    deliveryLocation: document.getElementById("deliveryLocation").value,
+    quantity: document.getElementById("quantity").value,
+    preferredTime: document.getElementById("preferredTime").value,
+    paymentMethod: document.getElementById("paymentMethod").value,
+    additionalNotes: document.getElementById("additionalNotes").value
   };
 
-  try {
-    // Send order to your Apps Script webhook
-    const response = await fetch("https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+  fetch("https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(response => response.text())
+  .then(res => {
+    console.log(res);
+    // Redirect after success
+    window.location.href = "https://sites.google.com/view/thesausagehaven/home";
+  })
+  .catch(err => console.error(err));
+});
 
-    const text = await response.text();
-
-    // Redirect user after submission
-    if (paymentMethod.toLowerCase() === "cash") {
-      window.location.href = "https://sites.google.com/view/thesausagehaven/home";
-    } else if (paymentMethod.toLowerCase().includes("momo")) {
-      // MoMo/Paystack will handle payment
-      // Redirect to thank-you page after Apps Script/Paystack webhook confirms payment
-      window.location.href = "https://sites.google.com/view/thesausagehaven/home";
-    }
-
-    console.log("Webhook response:", text);
-  } catch (err) {
-    console.error("Error submitting order:", err);
-    alert("Something went wrong. Please try again.");
-  }
-}
-
-// Bind to your form
-document.querySelector("#orderForm").addEventListener("submit", submitOrder);
-</script>
