@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sausage Haven - Order Now</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-red-600 text-white p-6 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">The Sausage Haven</h1>
+      <nav class="space-x-4">
+        <a href="#order" class="hover:underline">Order Now</a>
+        <a href="#contact" class="hover:underline">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-red-400 to-red-600 text-white py-20 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold mb-4">Fresh & Delicious Sausages Delivered!</h2>
+      <p class="text-lg mb-6">Order online and get your favorite sausages straight to your hostel or home.</p>
+      <a href="#order" class="bg-white text-red-600 font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Place Your Order</a>
+    </div>
+  </section>
+
+  <!-- Order Form Section -->
+  <section id="order" class="py-16">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Place Your Order</h3>
+      <form action="https://forms.gle/YOUR_GOOGLE_FORM_LINK" method="POST" target="_blank" class="space-y-6">
+        
+        <!-- Full Name -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Full Name</label>
+          <input type="text" name="FullName" placeholder="e.g., John Doe" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+		  
+		  <br>
+
+        <!-- Phone Number -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
+          <input type="tel" name="PhoneNumber" placeholder="e.g., 0241234567" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div><br>
+
+
+        <!-- Delivery Location -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Delivery Location</label>
+          <input type="text" name="DeliveryLocation" placeholder="e.g., Hostel A, Room 12" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div><br>
+
+
+        <!-- Quantity -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Quantity</label>
+          <input type="number" name="Quantity" min="1" placeholder="e.g., 2" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div><br>
+
+
+        <!-- Preferred Delivery Time -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Preferred Delivery Time</label>
+          <input type="time" name="DeliveryTime" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <p class="text-gray-500 text-sm mt-1">Orders are prepared fresh and delivered as soon as possible.</p>
+        </div><br>
+
+
+        <!-- Payment Method -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Payment Method</label>
+          <select name="PaymentMethod" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+            <option value="">Select a method</option>
+            <option value="Cash">Cash on Delivery</option>
+            <option value="MoMo">Mobile Money (small processing fee applies)</option>
+          </select>
+        </div><br>
+
+
+        <!-- Additional Notes -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2">Additional Notes</label>
+          <textarea name="AdditionalNotes" placeholder="Special requests..." rows="3"
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
+        </div><br>
+<br>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit"
+            class="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow hover:bg-red-700 transform hover:scale-105 transition duration-300">
+            Submit Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </section><br>
+<br>
+
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-gray-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-bold text-gray-800 mb-4">Contact Us</h3>
+      <p class="text-gray-600 mb-2">Phone: 0256507851</p>
+      <p class="text-gray-600">Email: thesausagehaven@gmail.com</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-red-600 text-white p-6 mt-8 text-center">
+    © 2025 The Sausage Haven. All rights reserved.
+  </footer>
+
+</body>
+</html>
