@@ -174,19 +174,13 @@
     <form id="walkInForm">
       <input type="text" name="fullName" placeholder="Full Name" required>
       <input type="text" name="phone" placeholder="Phone" required>
-      <input type="text" name="location" placeholder="Location" required>
       <input type="number" name="quantity" required min="1">
-      <input type="text" name="preferredTime" placeholder="Preferred Time">
-      <select name="paymentMethod">
-        <option value="cash">Cash</option>
-        <option value="momo">MoMo</option>
-      </select>
-      <select name="shop" required>
+       <select name="shop" required>
         <option value="">Select Shop</option>
-        <option value="J's Royal">J's Royal</option>
-        <option value="Gusss Hostel">Gusss Hostel</option>
+        <option value="JRS01">J's Royal</option>
+        <option value="GHS01">Gusss Hostel</option>
       </select>
-      <select name="deliveryStaff" required>
+       <select name="deliveryStaff" required>
         <option value="">Select Staff</option>
         <option value="DM001">DM001</option>
         <option value="DM002">DM002</option>
@@ -201,6 +195,11 @@
         <option value="DM011">DM011</option>
         <option value="DM012">DM012</option>
       </select>
+      <select name="paymentMethod">
+        <option value="walk-in-cash">Cash</option>
+        <option value="walk-in-momo">MoMo</option>
+      </select>
+     
       <textarea name="notes" rows="3" placeholder="Additional Notes"></textarea>
 
       <button type="submit">Submit Walk-In Order</button>
@@ -355,3 +354,4 @@
 
 </body>
 </html>
+
