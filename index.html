@@ -310,15 +310,14 @@ async function handleOrderSubmission(formData) {
   document.getElementById("orderForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-   const form = new FormData(orderForm);
-form.append("action", "onlineOrder"); // tell Apps Script it's a new order
-const payload = new URLSearchParams(form).toString();
-
+  const formData = Object.fromEntries(new FormData(orderForm));
+formData.action = "onlineOrder";
 await fetch(SCRIPT_URL, {
   method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: payload
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
 });
+
 
 
     document.getElementById("orderStatus").textContent = "Order submitted!";
@@ -388,5 +387,6 @@ await fetch(SCRIPT_URL, {
 
 </body>
 </html>
+
 
 
