@@ -85,7 +85,8 @@
   <section id="order" class="bg-white p-8 rounded-lg shadow-md">
     <h3 class="text-2xl font-bold mb-4 text-center">Place Your Order</h3>
 
-    <form id="orderForm" class="space-y-4">
+    <form id="customerOrderForm" class="space-y-4" method="POST" action="https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec">
+      <input type="hidden" name="orderType" value="Customer">
       <div>
         <label>Full Name</label>
         <input name="FullName" type="text" required class="w-full border rounded px-3 py-2">
@@ -112,17 +113,17 @@
       </div>
 
       <div>
+        <label>Additional Notes</label>
+        <textarea name="AdditionalNotes" rows="3" class="w-full border rounded px-3 py-2"></textarea>
+      </div>
+
+       <div>
         <label>Payment Method</label>
         <select name="PaymentMethod" required class="w-full border rounded px-3 py-2">
           <option value="">Select...</option>
           <option value="Cash">Cash on Delivery</option>
           <option value="MoMo">Mobile Money (MoMo)</option>
         </select>
-      </div>
-
-      <div>
-        <label>Additional Notes</label>
-        <textarea name="AdditionalNotes" rows="3" class="w-full border rounded px-3 py-2"></textarea>
       </div>
 
       <button id="submitOrderBtn" type="submit"
@@ -167,23 +168,39 @@
 </div>
 
 <!-- WALK-IN FORM -->
-<section id="staffWalkIn" class="hidden">
+<section id="staffOrderForm" class="hidden">
   <div class="container">
     <h2>Walk-In Order</h2>
 
-    <form id="walkInForm">
+    <form id="staffOrderForm" method="POST" action="https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec">
+      <input type="hidden" name="orderType" value="Staff">
+      <label>Full Name</label>
       <input type="text" name="fullName" placeholder="Full Name" required>
+
+      <label>Phone Number</label>
       <input type="text" name="phoneNumber" placeholder="Phone" required>
+
+      <label>Quantity</label>
       <input type="number" name="quantity" required min="1">
-      <select name="shop" required>
+     
+      <label>Additional Notes</label>
+      <textarea name="notes" rows="3"></textarea>
+
+      <label>Payment Method</label>
+      <select name="paymentMethod">
+        <option value="cash">Cash</option>
+        <option value="momo">MoMo</option>
+      </select>
+        
+        <label>Shop</label>
+       <select name="DeliveryPoint" required>
         <option value="">Select Shop</option>
         <option value="JRS01">J's Royal</option>
         <option value="GHS01">Gusss Hostel</option>
       </select>
-      <select name="paymentMethod">
-        <option value="walk-in-cash">Cash</option>
-        <option value="walk-in-momo">MoMo</option>
-      </select>
+
+
+      <label>Delivery Staff</label>
       <select name="deliveryStaff" required>
         <option value="">Select Staff</option>
         <option value="DM001">DM001</option>
@@ -199,44 +216,11 @@
         <option value="DM011">DM011</option>
         <option value="DM012">DM012</option>
       </select>
-      <textarea name="notes" rows="3"></textarea>
+      
 
       <button type="submit">Submit Walk-In Order</button>
     </form>
 
-    <script>
-      // Form submit handler (works for walk-in and online)
-async function handleOrderSubmission(formData) {
-  try {
-    const response = await fetch("YOUR_APPS_SCRIPT_WEB_APP_URL", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
-    });
-
-    const result = await response.json();
-
-    if (result.status === "success") {
-      // 1️⃣ Cash payments or Walk-ins marked PAID immediately
-      if (!result.paystackUrl) {
-        alert("Order successful!\nInvoice: " + result.invoiceLink);
-        // Optionally, you could open invoice in new tab
-        window.open(result.invoiceLink, "_blank");
-      } 
-      // 2️⃣ MoMo payments - redirect to Paystack
-      else if (result.paystackUrl) {
-        // Redirect customer to Paystack payment page
-        window.location.href = result.paystackUrl;
-      }
-    } else {
-      alert("Error submitting order: " + result.message);
-    }
-  } catch (err) {
-    console.error("Submission error:", err);
-    alert("Failed to submit order. Please try again.");
-  }
-}
-    </script>
 
     <div id="response"></div>
   </div>
@@ -306,43 +290,7 @@ async function handleOrderSubmission(formData) {
     document.getElementById('staffDashboard').classList.add('hidden');
   };
 
-  /* CUSTOMER ORDER SUBMIT */
-  document.getElementById("orderForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-  const formData = Object.fromEntries(new FormData(orderForm));
-formData.action = "onlineOrder";
-await fetch(SCRIPT_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData)
-});
-
-
-
-    document.getElementById("orderStatus").textContent = "Order submitted!";
-    document.getElementById("orderStatus").classList.remove("hidden");
-    orderForm.reset();
-  });
-
-  /* WALK-IN FORM SUBMIT */
-  document.getElementById("walkInForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const form = new FormData(e.target);
-form.append("action", "walkin"); // crucial
-const payload = new URLSearchParams(form).toString();
-
-await fetch(SCRIPT_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: payload
-});
-
-
-    document.getElementById("response").textContent = "Walk-In Order Saved!";
-    e.target.reset();
-  });
+  
 
   /* DASHBOARD LOAD */
   async function loadOrders() {
@@ -368,8 +316,8 @@ await fetch(SCRIPT_URL, {
         <td class="border px-3 py-2">${o.DeliveryPoint}</td>
         <td class="border px-3 py-2"><a target="_blank" href="${o.InvoiceUrl}">Invoice</a></td>
         <td class="border px-3 py-2">
-          <button class="bg-green-600 text-white px-3 py-1 rounded"
-            onclick="markDelivered(${o._rowNumber})">Delivered</button>
+          <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">Delivered</button>
+
         </td>
       `;
       body.appendChild(row);
@@ -387,6 +335,7 @@ await fetch(SCRIPT_URL, {
 
 </body>
 </html>
+
 
 
 
