@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <img src="https://i.ibb.co/QjMfBBqz/LOGO.png" alt="LOGO" class="h-12 w-auto">
   <title>The Sausage Haven</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -359,7 +360,7 @@
   document.getElementById('openWalkInBtn').onclick = () => {
     if (modalPassword.value !== STAFF_PASSWORD) return alert("Wrong password");
     staffModal.classList.add('hidden');
-    document.getElementById('staffWalkIn').classList.remove('hidden');
+    document.getElementById('staffOrderForm').classList.remove('hidden');
   };
 
   document.getElementById('openDashboardBtn').onclick = () => {
@@ -475,6 +476,7 @@
 
 </body>
 </html>
+
 
 
 
