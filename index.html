@@ -90,11 +90,59 @@
     #openDashboardBtn:hover {
       background: #eac89b !important;
     }
+    /* Animated Dual Background */
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.bg-img {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  opacity: 0.35; /* soft fade so text remains readable */
+  animation: float 18s ease-in-out infinite alternate;
+}
+
+/* First image shifts horizontally */
+.img1 {
+  animation-name: float1;
+}
+
+/* Second image shifts vertically */
+.img2 {
+  animation-name: float2;
+  mix-blend-mode: overlay; /* glow effect (optional) */
+}
+
+/* Motion animations */
+@keyframes float1 {
+  from { transform: translate(-5%, -5%) scale(1.05); }
+  to   { transform: translate(5%, 5%) scale(1.1); }
+}
+
+@keyframes float2 {
+  from { transform: translate(5%, 10%) scale(1.05); }
+  to   { transform: translate(-5%, -10%) scale(1.1); }
+}
+
 
   </style>
 </head>
 
 <body class="bg-[#faf7f2] font-sans text-gray-800">
+  
+  <!-- Animated Background -->
+<div class="animated-bg">
+  <img src="https://ibb.co/WWCLKQ73" class="bg-img img1">
+  <img src="https://ibb.co/WWCLKQ73" class="bg-img img2">
+</div>
+
 
 <!-- HEADER -->
 <header style="background:#f3d2a5;" class="text-gray-900 p-6 shadow-md">
@@ -129,7 +177,7 @@
 <section style="background:#037655;" class="text-white py-16 text-center">
   <div class="max-w-4xl mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold mb-3">
-      Fresh & Delicious Sausages Delivered!
+      Fresh & Delicious Sadia Sausages Delivered!
     </h2>
     <p class="mb-6">Order online and get your favorite Sadia sausages delivered to your hostel.</p>
 
@@ -476,6 +524,7 @@
 
 </body>
 </html>
+
 
 
 
