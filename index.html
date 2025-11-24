@@ -476,39 +476,10 @@
   });
 </script>
 
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script>
-async function payWithPaystack(reference, email, amount) {
-  var handler = PaystackPop.setup({
-    key: "pk_test_fe6ef7a6f65a4bc239dd05f0c8910e36fd9c315f", // Test or Live
-    email: email,
-    amount: amount,
-    ref: reference,
-    callback: function(response){
-      // Send reference to Apps Script webhook to mark as Paid
-      fetch("https://script.google.com/macros/s/AKfycbxJGHfyO9eWIn6rdwUhkmVRgqPnX38FPwz58UekuvKdSb_onFt-6nGo4n3NEo2oC5ll/exec", {
-        method: "POST",
-        body: JSON.stringify({ event: "payment.success", data: { reference: response.reference } }),
-        headers: { "Content-Type": "application/json" }
-      }).then(() => {
-        alert("Payment successful! Redirecting...");
-        window.location.href = "https://sites.google.com/view/thesausagehaven/home"; // redirect
-      });
-    },
-    onClose: function(){
-      alert("Payment was not completed.");
-    }
-  });
-  handler.openIframe();
-}
-
-// Example: Call this after form submission with JSON returned from Apps Script
-// Suppose 'data' is the JSON returned from your processPaystackOrder
-// payWithPaystack(data.reference, data.email, data.amount);
-</script>
 
 </body>
 </html>
+
 
 
 
